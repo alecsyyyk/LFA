@@ -6,24 +6,15 @@
 **Topic:** Grammar and Finite Automaton Implementation
 
 ## Overview
-This laboratory work implements the fundamental concepts of formal languages and automata theory, specifically focusing on:
-- Formal grammar representation and string generation
-- Conversion from grammar to finite automaton
-- String validation using finite automaton
+This laboratory work implements the fundamental concepts of formal languages and automata theory. The implementation focuses on three main areas: formal grammar representation and string generation, conversion from grammar to finite automaton, and string validation using finite automaton. These components work together to demonstrate the equivalence between regular grammars and finite automata.
 
 ## Objectives
-1. Implement a grammar class capable of generating valid strings
-2. Convert a regular grammar to a finite automaton
-3. Validate whether strings belong to the language defined by the grammar
+The primary objectives of this laboratory work are to implement a grammar class capable of generating valid strings, convert a regular grammar to a finite automaton, and validate whether strings belong to the language defined by the grammar. These objectives demonstrate the practical application of formal language theory and show how theoretical concepts translate into working code.
 
 ## Implementation
 
 ### 1. Grammar Class
-The `Grammar` class represents a formal grammar with the following components:
-- **VN (Non-terminals)**: Set of non-terminal symbols `{S, D, E, F, L}`
-- **VT (Terminals)**: Set of terminal symbols `{a, b, c, d}`
-- **P (Productions)**: Production rules defining how symbols can be transformed
-- **S (Start symbol)**: The starting symbol of the grammar `S`
+The `Grammar` class represents a formal grammar with four essential components. The **VN (Non-terminals)** component is a set of non-terminal symbols `{S, D, E, F, L}` that serve as intermediate variables in the grammar. The **VT (Terminals)** component contains the set of terminal symbols `{a, b, c, d}` which are the actual characters that appear in generated strings. The **P (Productions)** component defines the production rules that specify how symbols can be transformed during the generation process. Finally, the **S (Start symbol)** represents the starting symbol of the grammar, which is `S` in this implementation.
 
 **Code Implementation:**
 ```python
@@ -130,19 +121,10 @@ def toFiniteAutomaton(self):
     return FiniteAutomaton(states, alphabet, transitions, initial_state, final_states)
 ```
 
-This conversion works by:
-- Converting each non-terminal into a state
-- Creating a special final state `F_FINAL`
-- For productions of form `A → aB`, creating transition: δ(A, a) = B
-- For productions of form `A → a`, creating transition: δ(A, a) = F_FINAL
+This conversion works by first converting each non-terminal into a state in the automaton. The algorithm then creates a special final state called `F_FINAL` to represent successful string acceptance. For productions of the form `A → aB` (where A and B are non-terminals and a is a terminal), the algorithm creates a transition δ(A, a) = B. For productions of the form `A → a` (terminal productions), it creates a transition δ(A, a) = F_FINAL, indicating that the string ends successfully after consuming that terminal.
 
 ### 2. Finite Automaton Class
-The `FiniteAutomaton` class represents a finite automaton with:
-- **Q (States)**: Set of states derived from non-terminals plus a final state
-- **Σ (Alphabet)**: The terminal symbols
-- **δ (Transitions)**: Transition function mapping (state, symbol) pairs to next states
-- **q0 (Initial state)**: Starting state of the automaton
-- **F (Final states)**: Set of accepting states
+The `FiniteAutomaton` class represents a finite automaton with five essential components. The **Q (States)** component is the set of states derived from the grammar's non-terminals plus an additional final state. The **Σ (Alphabet)** represents the terminal symbols that the automaton can process. The **δ (Transitions)** is the transition function that maps (state, symbol) pairs to next states, defining how the automaton moves between states. The **q0 (Initial state)** specifies the starting state of the automaton where processing begins. Finally, **F (Final states)** is the set of accepting states where the automaton successfully recognizes a valid string.
 
 **Code Implementation:**
 ```python
@@ -183,11 +165,7 @@ def stringBelongToLanguage(self, input_string):
     return current_state in self.F
 ```
 
-The method processes the input string symbol by symbol, following the transition function. If at any point:
-- A symbol is not in the alphabet, or
-- No transition exists for the current state and symbol
-
-The string is rejected. The string is accepted only if processing ends in a final state.
+The method processes the input string symbol by symbol, following the transition function at each step. If at any point a symbol is not in the alphabet, or no transition exists for the current state and symbol combination, the string is immediately rejected. The string is accepted only if processing completes successfully and ends in a final state, indicating that the entire input string matches the language defined by the automaton.
 
 **2. display() Method:**
 
@@ -208,10 +186,7 @@ def display(self):
 This provides clear visualization of the automaton structure for debugging and understanding.
 
 ## Grammar Type
-The implemented grammar is a **Type 3 (Regular) Grammar** because:
-- All productions are either of the form `A → aB` (where A, B are non-terminals and a is a terminal)
-- Or of the form `A → a` (where A is a non-terminal and a is a terminal)
-- This is characteristic of right-linear grammars, which are equivalent to regular languages
+The implemented grammar is a **Type 3 (Regular) Grammar** according to the Chomsky hierarchy. This classification is valid because all productions are either of the form `A → aB` (where A and B are non-terminals and a is a terminal) or of the form `A → a` (where A is a non-terminal and a is a terminal). This structure is characteristic of right-linear grammars, which are mathematically equivalent to regular languages and can be recognized by finite automata.
 
 ## How to Run
 
@@ -245,9 +220,7 @@ def main():
 ## Execution Results
 
 ### String Generation
-The program generates 5 random valid strings from the grammar. Examples of valid strings include:
-- Strings starting with `ab` followed by patterns
-- Strings containing sequences like `abc`, `abdal...c`, etc.
+The program generates 5 random valid strings from the grammar by applying production rules randomly. The generated strings typically start with `ab` followed by various patterns determined by the grammar rules. Examples of valid strings include sequences like `abc`, `abdal...c`, and other combinations that follow the production patterns defined in the grammar.
 
 **Example Output:**
 ```
@@ -264,9 +237,7 @@ Generated strings from grammar:
 
 
 ### String Validation
-The program tests both:
-1. **Generated strings**: Validates that strings generated by the grammar are accepted by the automaton
-2. **Predefined test strings**: Tests various strings to verify correct acceptance/rejection
+The program performs two types of string validation tests. First, it validates that strings generated by the grammar are correctly accepted by the automaton, demonstrating the consistency between the grammar and its corresponding automaton. Second, it tests various predefined test strings to verify correct acceptance or rejection behavior, ensuring that the automaton properly identifies which strings belong to the language and which do not.
 
 **Test String Array:**
 ```python
@@ -334,17 +305,12 @@ This shows how the production rules are converted into state transitions. Each n
 ## Key Concepts Demonstrated
 
 ### 1. Formal Grammar
-Mathematical model for generating strings in a formal language. The grammar G = (VN, VT, P, S) defines:
-- How to start (from start symbol S)
-- What symbols can appear (terminals VT)
-- How to transform non-terminals (production rules P)
+A formal grammar is a mathematical model for generating strings in a formal language. The grammar G = (VN, VT, P, S) defines how to start the generation process from the start symbol S, what symbols can appear in the final strings through the terminals VT, and how to transform non-terminals through the production rules P. This structured approach allows for precise specification of valid strings in the language.
 
 **Example Generation:** S → aD → abE → abcF → abcdD → abcdbE → abcdbc (final)
 
 ### 2. Regular Languages
-Languages that can be recognized by finite automata. Our grammar is Type-3 (regular) because all productions follow the pattern:
-- `A → aB` (right-linear form)
-- `A → a` (terminal production)
+Regular languages are a class of formal languages that can be recognized by finite automata. Our grammar is classified as Type-3 (regular) because all productions follow a restricted pattern: either `A → aB` (right-linear form where a non-terminal produces a terminal followed by another non-terminal) or `A → a` (terminal production where a non-terminal produces only a terminal). This restriction ensures the language can be efficiently recognized by a finite automaton.
 
 ### 3. Grammar-to-Automaton Conversion
 Algorithmic transformation showing the equivalence:
@@ -372,15 +338,9 @@ for symbol in 'abc':
 
 **Language**: Python 3  
 **Dependencies**: Standard library only (`random` module)  
-**Data Structures Used**:
-- Sets for non-terminals, terminals, states
-- Dictionaries for productions and transitions
-- Tuples as dictionary keys for (state, symbol) pairs
+**Data Structures Used**: The implementation utilizes several Python data structures to efficiently represent the grammar and automaton. Sets are used for storing non-terminals, terminals, and states to ensure uniqueness and fast membership testing. Dictionaries store productions and transitions, providing O(1) lookup time for rule application. Tuples serve as dictionary keys for (state, symbol) pairs in the transition function, allowing efficient representation of the automaton's behavior.
 
-**Algorithm Complexity**:
-- String generation: O(n × m) where n is string length, m is number of non-terminals
-- String validation: O(n) where n is string length
-- Grammar to FA conversion: O(p) where p is number of productions
+**Algorithm Complexity**: The implementation has well-defined time complexities for each operation. String generation operates in O(n × m) time, where n is the length of the generated string and m is the number of non-terminals, as each position may require checking all non-terminals. String validation runs in O(n) time where n is the string length, processing each character exactly once. The grammar to finite automaton conversion operates in O(p) time where p is the number of productions, as each production rule is processed once to create corresponding transitions.
 
 **Safety Features**:
 ```python
@@ -394,11 +354,6 @@ if transition_key in self.delta:  # Guards against missing transitions
 ```
 
 ## Conclusion
-This laboratory work successfully demonstrates the theoretical equivalence between regular grammars and finite automata through practical Python implementations. The code illustrates:
-
-1. **String Generation**: Using production rules to generate valid strings from the grammar
-2. **Conversion Algorithm**: Systematic transformation of grammar components into automaton states and transitions  
-3. **String Validation**: Simulation of automaton behavior to accept/reject input strings
-4. **Correctness Verification**: Every string generated by the grammar is accepted by the corresponding finite automaton
+This laboratory work successfully demonstrates the theoretical equivalence between regular grammars and finite automata through practical Python implementations. The code illustrates multiple key concepts in action. **String Generation** demonstrates how production rules can be used to generate valid strings from the grammar through random rule application. The **Conversion Algorithm** shows the systematic transformation of grammar components into automaton states and transitions, maintaining the language's structure. **String Validation** simulates automaton behavior to accept or reject input strings based on the transition function and final states. Finally, **Correctness Verification** confirms that every string generated by the grammar is accepted by the corresponding finite automaton, proving the implementation's correctness and the theoretical equivalence between the two representations.
 
 The implementation provides a hands-on understanding of formal language theory concepts and their practical applications in computer science, particularly in compiler design, pattern matching, and language processing.
