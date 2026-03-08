@@ -16,14 +16,7 @@ In automata theory, **determinism** characterizes how predictable a system behav
 
 ## Objectives
 
-This laboratory work accomplishes the following goals:
-
-1. **Implement a Finite Automaton** representation in Python
-2. **Classify grammars** according to the Chomsky hierarchy
-3. **Convert Finite Automaton to Regular Grammar**
-4. **Determine if an FA is deterministic or non-deterministic**
-5. **Implement NDFA to DFA conversion** using subset construction algorithm
-6. **Bonus**: Graphical representation (optional)
+This laboratory work accomplishes the following goals: implement a Finite Automaton representation in Python, classify grammars according to the Chomsky hierarchy, convert Finite Automaton to Regular Grammar, determine if an FA is deterministic or non-deterministic, implement NDFA to DFA conversion using subset construction algorithm, and as a bonus, provide graphical representation (optional).
 
 ---
 
@@ -32,17 +25,8 @@ This laboratory work accomplishes the following goals:
 According to the assigned variant, the finite automaton is defined as follows:
 
 **Given:**
-- **Q** = {q0, q1, q2, q3} - Set of states
-- **Σ** = {a, b} - Input alphabet
-- **q0** - Initial state
-- **F** = {q3} - Set of final/accepting states
-- **δ** - Transition function:
-  - δ(q0, a) = q1
-  - δ(q1, a) = q1
-  - δ(q1, b) = q2
-  - δ(q2, b) = q2
-  - δ(q2, b) = q3
-  - δ(q3, a) = q1
+
+The finite automaton is defined with **Q** = {q0, q1, q2, q3} as the set of states, **Σ** = {a, b} as the input alphabet, **q0** as the initial state, and **F** = {q3} as the set of final/accepting states. The transition function **δ** is defined as follows: δ(q0, a) = q1, δ(q1, a) = q1, δ(q1, b) = q2, δ(q2, b) = q2, δ(q2, b) = q3, and δ(q3, a) = q1.
 
 **Note:** The transition function has **two rules** for δ(q2, b), making this a **non-deterministic** finite automaton (NDFA).
 
@@ -105,9 +89,8 @@ def is_deterministic(self) -> bool:
 ```
 
 **Determinism Criteria:**
-- Each state-symbol pair must have **at most one** transition
-- No **epsilon (ε) transitions** are allowed
-- All transitions must be explicitly defined
+
+For an automaton to be deterministic, each state-symbol pair must have at most one transition, no epsilon (ε) transitions are allowed, and all transitions must be explicitly defined.
 
 **Result for our variant:** The automaton is **NON-DETERMINISTIC** because state q2 with symbol 'b' has two possible transitions: {q2, q3}.
 
@@ -118,9 +101,8 @@ def is_deterministic(self) -> bool:
 The `to_regular_grammar()` method converts the finite automaton into an equivalent regular grammar using the following rules:
 
 **Conversion Rules:**
-- Each transition δ(qi, a) = qj becomes production: `Qi → aQj`
-- If qj is a final state, also add: `Qi → a`
-- The initial state becomes the start symbol
+
+The conversion follows these rules: each transition δ(qi, a) = qj becomes production `Qi → aQj`. If qj is a final state, we also add the production `Qi → a`. The initial state becomes the start symbol of the grammar.
 
 **Implementation:**
 ```python
@@ -153,10 +135,8 @@ def to_regular_grammar(self) -> Dict:
 ```
 
 **Example Productions Generated:**
-- Q0 → aQ1
-- Q1 → aQ1 | bQ2
-- Q2 → bQ2 | bQ3 | b (since Q3 is final)
-- Q3 → aQ1
+
+The conversion generates the following productions: Q0 → aQ1, Q1 → aQ1 | bQ2, Q2 → bQ2 | bQ3 | b (since Q3 is final), and Q3 → aQ1.
 
 ---
 
@@ -165,11 +145,8 @@ def to_regular_grammar(self) -> Dict:
 The `convert_ndfa_to_dfa()` method implements the **subset construction algorithm** (also known as powerset construction). This algorithm eliminates non-determinism by creating DFA states that represent sets of NDFA states.
 
 **Algorithm Overview:**
-1. Start with the initial state as a singleton set
-2. For each state set and each symbol, compute all reachable states
-3. Create new DFA states from these state sets
-4. Mark DFA states as final if they contain any NDFA final state
-5. Continue until all reachable state sets are processed
+
+The algorithm starts with the initial state as a singleton set. For each state set and each symbol, it computes all reachable states. It then creates new DFA states from these state sets and marks DFA states as final if they contain any NDFA final state. The process continues until all reachable state sets are processed.
 
 **Implementation:**
 ```python
@@ -224,9 +201,8 @@ def convert_ndfa_to_dfa(self) -> 'FiniteAutomaton':
 ```
 
 **Key Insights:**
-- DFA states are named as sets: `{q0}`, `{q2,q3}`, etc.
-- The problematic transition δ(q2, b) = {q2, q3} becomes a single DFA state `{q2,q3}`
-- Every possible combination of NDFA states becomes a unique DFA state
+
+DFA states are named as sets such as `{q0}`, `{q2,q3}`, etc. The problematic transition δ(q2, b) = {q2, q3} becomes a single DFA state `{q2,q3}`. Every possible combination of NDFA states becomes a unique DFA state.
 
 ---
 
@@ -326,52 +302,32 @@ This means when in state q2 and reading symbol 'b', the automaton can choose to:
 
 ### Generated Regular Grammar
 
-The grammar produced from the NDFA is **Type 3 (Regular)**:
-- **V_N** = {Q0, Q1, Q2, Q3}
-- **V_T** = {a, b}
-- **S** = Q0
-- **P**:
-  - Q0 → aQ1
-  - Q1 → aQ1 | bQ2
-  - Q2 → bQ2 | bQ3 | b
-  - Q3 → aQ1
+The grammar produced from the NDFA is **Type 3 (Regular)** with **V_N** = {Q0, Q1, Q2, Q3}, **V_T** = {a, b}, **S** = Q0, and **P** containing the productions Q0 → aQ1, Q1 → aQ1 | bQ2, Q2 → bQ2 | bQ3 | b, and Q3 → aQ1.
 
 ### Converted DFA
 
-After applying the subset construction algorithm, the resulting DFA:
-- Has more states than the original NDFA
-- Is completely deterministic (verified by `is_deterministic()`)
-- Accepts the same language as the original NDFA
-- Every state-symbol pair has exactly one transition
+After applying the subset construction algorithm, the resulting DFA has more states than the original NDFA, is completely deterministic (verified by `is_deterministic()`), accepts the same language as the original NDFA, and every state-symbol pair has exactly one transition.
 
 ---
 
 ## Language Accepted
 
-The automaton accepts strings that:
-1. **Start with 'a'** (transition from q0 to q1)
-2. **Contain any combination of 'a' and 'b'** (loops and transitions)
-3. **End with 'b'** (transition to final state q3)
+The automaton accepts strings that start with 'a' (transition from q0 to q1), contain any combination of 'a' and 'b' (loops and transitions), and end with 'b' (transition to final state q3).
 
-**Valid examples:**
-- `ab` 
-- `aab` 
-- `abb` 
-- `aababb` 
+**Valid examples:** `ab`, `aab`, `abb`, `aababb`
 
-**Invalid examples:**
-- `ba`  (doesn't start with 'a')
-- `aa`  (doesn't end with 'b')
-- `b`  (doesn't start with 'a')
+**Invalid examples:** `ba` (doesn't start with 'a'), `aa` (doesn't end with 'b'), `b` (doesn't start with 'a')
 
 ---
 
 ## Conclusion
 
-Through this laboratory work, I gained a comprehensive understanding of finite automata and their practical implementation. I learned the fundamental distinction between deterministic and non-deterministic automata, and how the subset construction algorithm systematically eliminates non-determinism by creating DFA states that represent sets of NDFA states. The implementation demonstrated the practical trade-off between non-determinism (fewer states, multiple transitions) and determinism (more states, predictable behavior).
+Through this laboratory work, I learned about finite automata and how they work in practice. I understood the difference between deterministic automata (DFA) and non-deterministic automata (NDFA). I also learned how the subset construction algorithm converts an NDFA into a DFA by creating new states that represent groups of NDFA states.
 
-The most valuable insight was understanding the equivalence between finite automata and regular grammars. By implementing the conversion algorithms, I discovered how each transition directly corresponds to a production rule, establishing a clear mathematical relationship between these formalisms. The Chomsky hierarchy classification reinforced that grammars generated from finite automata always belong to Type 3 (Regular Grammars), perfectly aligning with the theoretical expectation that finite automata recognize regular languages. Adding graphical visualization using NetworkX and Matplotlib enhanced my understanding by making abstract concepts tangible, allowing me to visually verify correctness and trace string paths through the automaton.
+Another important thing I learned was the connection between finite automata and regular grammars. Each transition in the automaton can be written as a production rule in a grammar. This shows that the grammars created from finite automata are Type 3 (Regular Grammars) in the Chomsky hierarchy, which means they describe regular languages.
 
-From a software engineering perspective, I learned the importance of proper abstraction and modular design. Encapsulating automaton logic within well-defined classes made the code reusable and testable, while Python's type hints and data structures efficiently implemented mathematical concepts. This project strengthened both my theoretical understanding of automata theory and practical programming skills, bridging the gap between mathematical definitions and working code. The experience will be invaluable for understanding advanced topics in compiler design, regular expressions, and theoretical computer science.
+Using graphical visualization helped me understand the automaton better because I could see the states and transitions clearly. This made it easier to follow how strings move through the automaton.
+
+From a programming perspective, I learned how to organize code using classes and clear structure. This project improved both my theoretical knowledge and programming skills, which are useful for topics like compiler design and regular expression
 
 ---
