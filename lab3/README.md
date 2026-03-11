@@ -118,10 +118,13 @@ The lexer is the first stage, transforming raw text into tokens. This separates 
 
 ## Conclusion
 
-This lexer demonstrates lexical analysis by transforming text into tokens. It supports integers, floats, operators, functions (sin, cos, tan, sqrt, log), constants (pi, e), identifiers, and delimiters. The modular design separates token identification from syntax checking, creating a clean foundation for an extended calculator or programming language.
+This lexer demonstrates the process of lexical analysis by transforming an input string of characters into a sequence of meaningful tokens. It recognizes several token categories, including integers, floating-point numbers, arithmetic operators, mathematical functions (sin, cos, tan, sqrt, log), constants such as pi and e, identifiers, and delimiters.
 
+Each token is extracted according to predefined lexical rules, allowing the program to correctly interpret different elements of mathematical expressions. The modular structure of the lexer separates token recognition from syntax validation, which improves code readability, maintainability, and extensibility. This design also allows new tokens, operators, or functions to be easily added without modifying the core logic of the analyzer.
+
+As a result, the lexer provides a solid foundation for further stages such as parsing and expression evaluation, making it suitable as the first component of a more advanced calculator, interpreter, or simple programming language processor.
 ## Author
 
 Lab 3 - LFA Course
-Date: March 2026  
+
 
