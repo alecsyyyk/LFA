@@ -163,6 +163,21 @@ def print_tokens(tokens: List[Token]):
     print("="*70 + "\n")
 
 
+def validate_parentheses(tokens: List[Token]):
+    balance = 0
+    for token in tokens:
+        if token.type == TokenType.LPAREN:
+            balance += 1
+        elif token.type == TokenType.RPAREN:
+            balance -= 1
+        
+        if balance < 0:
+            raise Exception(f"Syntax Error: Unmatched closing parenthesis at position {token.position}")
+            
+    if balance > 0:
+        raise Exception("Syntax Error: Unmatched opening parenthesis at the end of the expression")
+
+
 def run_tests():
     test_cases = [
         "3 + 5 * 2",
@@ -175,6 +190,8 @@ def run_tests():
         "2^3 + 3^2 - 5",
         "(sin(x) + cos(y)) / 2",
         "result = sqrt(144) + log(1000)",
+        "sin(pi / 2) - cos(pi",  
+        "(3 + 4) * 5)",          
     ]
     
     print("\n" + "#"*70)
@@ -188,6 +205,7 @@ def run_tests():
         try:
             lexer = Lexer(test_input)
             tokens = lexer.tokenize()
+            validate_parentheses(tokens)  # Validate parentheses after tokenizing
             print_tokens(tokens)
             
         except Exception as e:
