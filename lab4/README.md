@@ -49,7 +49,7 @@ The script also accepts custom regexes through CLI arguments.
 
 The implementation centers around a recursive-descent parser that transforms regex patterns into an abstract syntax tree (AST) using node types like `Literal`, `Concat`, `Alternate`, and `Repeat`. From this AST, a recursive generation algorithm walks through the structure to produce valid words, carefully capping unlimited repetitions to prevent unwieldy outputs. Duplicate filtering ensures variety when generating multiple examples, while a tracing feature tracks the step-by-step reasoning behind each generated word to satisfy the bonus requirement. Finally, the Variant 3 regex set is pre-configured for quick demonstration, making it easy to see the generator in action right away.
 
-## 7. Conclusion
+## 6. Conclusion
 
 Building this project was not always easy. Some handwritten expressions were difficult to understand, so I used context and examples to find the correct meaning. Another problem was the combinatorial explosion caused by * and +, which can generate too many strings. To solve this, I limited repetitions to five, so the program stays efficient but still produces useful results. I also made sure the code is generic, not only working for specific examples, by using an AST structure.
 
