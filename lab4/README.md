@@ -1,16 +1,8 @@
 # Lab 4 Dynamic Regular Expression Generator (Variant 3)
 
 ## 1. Regular Expressions Are
-A regular expression (regex) is a formal pattern used to describe sets of strings over an alphabet.
+A regular expression (regex) is a formal pattern used to describe sets of strings over a given alphabet, and in practical programming it serves as a powerful tool for tasks such as validating input formats like emails or phone numbers, searching for specific patterns within large texts, extracting structured information from unstructured data, transforming text through find-and-replace operations, and defining lexical patterns for simple parsers; in this lab, regex is used as a compact and precise way to specify which words are considered valid.
 
-In practical programming, regex is used to:
-- validate input formats (emails, phone numbers, identifiers)
-- search for text patterns in large files
-- extract structured data from unstructured text
-- transform text with find/replace rules
-- define lexical patterns for simple parsers
-
-For this lab, regex acts as a compact way to specify what words are valid.
 
 ## 2. Task Objective
 The objective was to implement a generator that:
