@@ -10,28 +10,17 @@ A context-free grammar is written as:
 
 G = (Vn, Vt, P, S)
 
-where:
-- Vn is the finite set of nonterminals.
-- Vt is the finite set of terminals.
-- P is the finite set of productions of the form A -> alpha, where A in Vn and alpha in (Vn U Vt)*.
-- S is the start symbol.
+where Vn is the finite set of nonterminals, Vt is the finite set of terminals, P is the finite set of productions of the form A -> alpha with A in Vn and alpha in (Vn U Vt)*, and S is the start symbol.
 
 The objective of CNF conversion is to change only the structure of P, while preserving the language L(G).
 
 ### 2.2 CNF Constraints Used in This Lab
-In this project, a production is valid in CNF if it has one of these two shapes:
-- A -> BC
-- A -> a
+In this project, a production is valid in CNF if it has one of these two shapes: A -> BC or A -> a.
 
 This is exactly what `is_cnf()` verifies at the end of the pipeline.
 
 ### 2.3 Why the Elimination Order Is Important
-The order of transformations is important for correctness and simplicity:
-1. Epsilon elimination first because nullable symbols affect many productions.
-2. Unit elimination next to remove chains like A -> B.
-3. Inaccessible symbol removal after simplification from S.
-4. Nonproductive symbol removal to keep only symbols that can produce terminal strings.
-5. CNF binarization and terminal replacement at the end.
+The order of transformations is important for correctness and simplicity. Epsilon elimination is applied first because nullable symbols affect many productions. Unit elimination is applied next to remove chains like A -> B. Inaccessible symbols are removed after simplification from S, and nonproductive symbols are then eliminated to keep only symbols that can produce terminal strings. CNF binarization and terminal replacement are performed at the end.
 
 If CNF conversion is performed too early, extra helper symbols may be created for rules that will later be removed.
 
@@ -104,29 +93,21 @@ Example non-CNF production:
 B -> aAa
 
 Step 1 (terminal factoring for long RHS):
-- T1 -> a
-- B -> T1 A T1
+T1 -> a and B -> T1 A T1.
 
 Step 2 (binarization):
-- B -> T1 X1
-- X1 -> A T1
+B -> T1 X1 and X1 -> A T1.
 
 Now every rule is either terminal-only or binary nonterminal-only, so the structure is CNF-compliant.
 
 ## 7. Correctness Intuition for Each Transformation
-- Epsilon elimination preserves derivations by adding all needed combinations where nullable symbols may disappear.
-- Unit elimination preserves derivations by replacing A =>* B unit chains with direct non-unit productions copied into A.
-- Inaccessible symbol elimination does not affect L(G) because unreachable symbols cannot appear in derivations from S.
-- Nonproductive symbol elimination does not affect terminal derivations because removed symbols cannot derive terminal strings.
-- Terminal factoring and binarization preserve meaning by introducing fresh helper nonterminals with deterministic expansions.
+Epsilon elimination preserves derivations by adding all needed combinations where nullable symbols may disappear. Unit elimination preserves derivations by replacing A =>* B unit chains with direct non-unit productions copied into A. Inaccessible symbol elimination does not affect L(G) because unreachable symbols cannot appear in derivations from S. Nonproductive symbol elimination does not affect terminal derivations because removed symbols cannot derive terminal strings. Terminal factoring and binarization preserve meaning by introducing fresh helper nonterminals with deterministic expansions.
 
 So the final grammar is equivalent in language, but normalized in form.
 
 ## 8. Complexity and Practical Behavior
 Let |P| be the number of productions and L the average production length.
-- Unit closure and reachability/productivity checks are polynomial in grammar size.
-- Epsilon expansion can grow faster when many nullable symbols appear in the same production.
-- Binarization is linear in the length of each production being split.
+Unit closure and reachability/productivity checks are polynomial in grammar size. Epsilon expansion can grow faster when many nullable symbols appear in the same production. Binarization is linear in the length of each production being split.
 
 For typical laboratory grammars, this method is efficient and easy to inspect step by step.
 
